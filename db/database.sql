@@ -8,7 +8,7 @@ DROP TABLE IF EXISTS `facilities`;
 
 CREATE TABLE `facilities` (
     `id`                      BIGINT NOT NULL AUTO_INCREMENT,
-    `gihs`                    VARCHAR(50) NOT NULL UNIQUE COMMENT 'Unique identifier',
+    `gihs`                    VARCHAR(50) NULL UNIQUE COMMENT 'Unique identifier',
     
     `district_en`             VARCHAR(100) NOT NULL,
     `district_cn`             VARCHAR(100) NOT NULL,
