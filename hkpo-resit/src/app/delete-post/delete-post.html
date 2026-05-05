@@ -1,0 +1,27 @@
+<div class="ui raised segment">
+  <h2 class="ui header">Delete Post Office Record</h2>
+
+  <form [formGroup]="deletePostForm"
+        (ngSubmit)="deleteRecord(deletePostForm.value.id)"
+        class="ui form">
+
+    <div class="field">
+      <label>Post Office ID to Delete</label>
+      <input type="number"
+             formControlName="id"
+             placeholder="Enter ID">
+    </div>
+
+    <div class="ui error message"
+         *ngIf="deletePostForm.controls['id'].hasError('required')">
+      Please enter an ID
+    </div>
+
+    <button type="submit"
+            class="ui red button"
+            [disabled]="!deletePostForm.valid">
+      Confirm Delete
+    </button>
+
+  </form>
+</div>

@@ -1,0 +1,67 @@
+<div class="ui raised segment">
+  <h2 class="ui header">Search Moblie Post Offices</h2>
+  <form [formGroup]="searchPostForm" (ngSubmit)="onSubmit(searchPostForm.value)" class="ui form error">
+    <div class="field" [class.error]="!searchPostForm.valid">
+      <label for="searchKey">By {{searchType}}</label>
+      <input type="text" id="searchKey" formControlName="searchKey">
+    </div>
+
+    <div class="ui error message" *ngIf="searchPostForm.controls['searchKey'].hasError('required')">
+      Please enter {{searchType}}
+    </div>
+
+    <div *ngIf="searchPostForm.valid">
+      <button type="submit" class="ui button">Submit</button>
+    </div>
+  </form>
+
+  <div>
+    {{ serverData | json }}
+  </div>
+
+  <p></p>
+  <div>
+    <table class="ui celled striped table">
+      <thead>
+      <tr>
+        <th>id</th>
+        <th>Moblie Code</th>
+        <th>Day of week code</th>
+        <th>seq</th>
+        <th>Name (EN)</th>
+        <th>District (EN)</th>
+        <th>Open Hours</th>
+        <th>Actions</th>
+      </tr>
+      </thead>
+      <tbody>
+      <!-- @ for is a for loop, -->
+        @for (post of serverDataArr; track post.id) {
+          <tr>
+            <td>{{post.id}}</td>
+            <td>{{post.moblieCode}}</td>
+            <td>{{post.dayofWeekCode}}</td>
+            <td>{{post.seq}}</td>
+            <td>{{post.nameEN}}</td>
+            <td>{{post.districtEN}}</td>
+            <td>{{post.openHour}} - {{post.closeHour}}</td>
+
+            <td>
+              <button (click)="deleteButtonHandler(post)">
+                Delete
+              </button>
+            </td>
+            <td>
+              <button (click)="editButtonHandler(post)">
+                Edit
+              </button>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+
+  </div>
+
+
+</div>

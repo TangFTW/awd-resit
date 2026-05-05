@@ -1,9 +1,0 @@
-{ 
-    "_comment": "please Change the target from /mobilepost to your backend server api",
-    "/mobilepost": {
-        "target": "http://localhost:3001",
-        "secure": false,
-        "logLevel": "debug",
-        "changeOrigin": true
-    }
-}
