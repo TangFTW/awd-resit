@@ -1,13 +1,13 @@
 <div class="ui raised segment">
   <h2 class="ui header">Search Moblie Post Offices</h2>
-  <form [formGroup]="searchPostForm" (ngSubmit)="onSubmit(searchPostForm.value)" class="ui form error">
-    <div class="field" [class.error]="!searchPostForm.valid">
-      <label for="searchKey">By {{searchType}}</label>
-      <input type="text" id="searchKey" formControlName="searchKey">
+  <form [formGroup]="searchPostForm" (ngSubmit)="onSubmit(searchPostForm.value)" class="ui form">
+    <div class="field">
+      <label>ID</label>
+      <input type="text" formControlName="id" placeholder="Search by ID">
     </div>
 
     <div class="ui error message" *ngIf="searchPostForm.controls['searchKey'].hasError('required')">
-      Please enter {{searchType}}
+      Please enter a search key.
     </div>
 
     <div *ngIf="searchPostForm.valid">
@@ -39,7 +39,7 @@
         @for (post of serverDataArr; track post.id) {
           <tr>
             <td>{{post.id}}</td>
-            <td>{{post.moblieCode}}</td>
+            <td>{{post.mobileCode}}</td>
             <td>{{post.dayofWeekCode}}</td>
             <td>{{post.seq}}</td>
             <td>{{post.nameEN}}</td>
