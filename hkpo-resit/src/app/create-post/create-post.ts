@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { PostRecord } from '../postrecord.model';
 import {CommonModule} from '@angular/common';
 // handles post(create record) request
@@ -15,7 +15,8 @@ export class CreatePost {
   http: HttpClient;
   serverData!: Object | null;
   serverDataArr!: any;
-
+  message: string = 'Create record here.'
+//build a form.
   constructor(fb: FormBuilder, http: HttpClient) {
     this.http = http;
 // enter essenial data for creating a data
@@ -24,14 +25,42 @@ export class CreatePost {
       'dayOfWeekCode': ['', Validators.required],
       'seq': ['', Validators.required],
       'districtEN': ['', Validators.required],
-      'nameEN': ['', Validators.required],
-      'openHour': ['', Validators.required],
-      'closeHour': ['', Validators.required],
+      'nameEN': [''],
+      'addressEN': [''],
+      'nameTC': [''],
+      'openHour': [''],
+      'closeHour': [''],
+
     });
 
   }
 
   createRecord(formValue: any): void {
+    this.serverData = null;
+    let url = 'http://localhost:3001/mobilepost';
+
+    console.log("Creating new post...");
+    console.log("URL:", url);
+
+    this.http.post(url, formValue).subscribe({
+      next: (res) => {
+        console.log(res);
+        this.message = "Record created.";
+      },
+
+
+      error: (err) => {
+        // port crash handaler
+        alert("Failed to create! Is the server running?");
+        console.log(err);
+      }
+    });
 
   }
+
+  // void aka do something, but return nothing
+
 }
+
+
+
