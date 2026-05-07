@@ -5,6 +5,7 @@ import { DeletePost } from './delete-post/delete-post';
 import { UpdatePost } from './update-post/update-post';
 import { CreatePost } from './create-post/create-post';
 import { TitleCasePipe } from '@angular/common';
+import { PostRecord } from './postrecord.model';
 import {MatDialog, MatDialogConfig, MatDialogRef} from '@angular/material/dialog';
 
 @Component({

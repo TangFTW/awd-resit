@@ -54,7 +54,7 @@ export class DeletePost {
   }
 
   confirmDelete(): void {
-    this.deleteRecord(this.data.id);
+    this.deleteRecord(this.data.id); // triggers delete
   }
   closeModal(): void {
     this.dialogRef.close(); // cancel button — close without deleting
