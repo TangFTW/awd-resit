@@ -21,6 +21,7 @@ export class App {
   dialogConfig = new MatDialogConfig();
   createPostDialogRef: MatDialogRef<CreatePost, any> | undefined;
   deletePostDialogRef: MatDialogRef<DeletePost, any> | undefined;
+  updatePostDialogRef: MatDialogRef<UpdatePost, any> | undefined;
 
 
   constructor(private dialog: MatDialog) {
@@ -34,13 +35,22 @@ export class App {
     this.deletePostDialogRef = this.dialog.open(DeletePost, this.dialogConfig);
   }
   openCreateDialog(): void {
-      console.log("App: createEvent received");
-      this.dialogConfig.id = "createPost";
-      this.dialogConfig.height = "500px";
-      this.dialogConfig.width = "650px";
-      // when success, return new data and update to db.
-      this.createPostDialogRef = this.dialog.open(CreatePost, this.dialogConfig);
-    }
+    console.log("App: createEvent received");
+    this.dialogConfig.id = "createPost";
+    this.dialogConfig.height = "500px";
+    this.dialogConfig.width = "650px";
+    // when success, return new data and update to db.
+    this.createPostDialogRef = this.dialog.open(CreatePost, this.dialogConfig);
+  }
+
+  openEditDialog(post: PostRecord): void {
+    console.log("App: editEvent received");
+    this.dialogConfig.id = "updatePost";
+    this.dialogConfig.height = "500px";
+    this.dialogConfig.width = "650px";
+    // when success, return new data and update to db.
+    this.updatePostDialogRef = this.dialog.open(UpdatePost, this.dialogConfig);
+  }
 
 
 }
