@@ -3,6 +3,8 @@ import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/
 import { HttpClient } from '@angular/common/http';
 import { PostRecord } from '../postrecord.model';
 import {CommonModule} from '@angular/common';
+import { MatDialogRef } from '@angular/material/dialog';
+
 // handles post(create record) request
 @Component({
   selector: 'app-create-post',
@@ -11,14 +13,16 @@ import {CommonModule} from '@angular/common';
   styleUrl: './create-post.css',
 })
 export class CreatePost {
+  dialogRef: MatDialogRef<CreatePost>;
   createPostForm: FormGroup;
   http: HttpClient;
   serverData!: Object | null;
   serverDataArr!: any;
   message: string = 'Create record here.'
 //build a form.
-  constructor(fb: FormBuilder, http: HttpClient) {
+  constructor(dialogRef: MatDialogRef<CreatePost>, fb: FormBuilder, http: HttpClient)  {
     this.http = http;
+    this.dialogRef = dialogRef;
 // enter essenial data for creating a data
     this.createPostForm = fb.group({
       'mobileCode': ['', Validators.required],
@@ -34,7 +38,7 @@ export class CreatePost {
     });
 
   }
-
+  // void aka do something, but return nothing
   createRecord(formValue: any): void {
     this.serverData = null;
     let url = 'http://localhost:3001/mobilepost';
@@ -45,7 +49,8 @@ export class CreatePost {
     this.http.post(url, formValue).subscribe({
       next: (res) => {
         console.log(res);
-        this.message = "Record created.";
+        this.message = "Record " + (res as any).data.id + " created successfully!";
+        this.dialogRef.close();
       },
 
 
@@ -58,9 +63,8 @@ export class CreatePost {
 
   }
 
-  // void aka do something, but return nothing
-
+  closeModal(): void {
+    this.dialogRef.close();
+  }
 }
-
-
 

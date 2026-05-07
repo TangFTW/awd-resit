@@ -1,8 +1,9 @@
-import { Component, OnInit  } from '@angular/core';
+import { Component, Output, EventEmitter, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { PostRecord } from '../postrecord.model';
-import {FormGroup, FormBuilder, Validators, ReactiveFormsModule} from '@angular/forms';
+import {FormGroup, FormBuilder, ReactiveFormsModule} from '@angular/forms';
 import { CommonModule } from '@angular/common';
+
 
 @Component({
   selector: 'app-search-post',
@@ -14,7 +15,8 @@ import { CommonModule } from '@angular/common';
 
 //
 export class SearchPost implements OnInit {
-
+  @Output() deletePostEvent = new EventEmitter<PostRecord>();
+  @Output() editPostEvent: EventEmitter<PostRecord> = new EventEmitter<PostRecord>();
   searchPostForm: FormGroup;
   http: HttpClient;
   serverData!: Object | null;
@@ -37,12 +39,14 @@ export class SearchPost implements OnInit {
 
   deleteButtonHandler(post: PostRecord): void {
     console.log("Delete clicked for post ID:", post.id);
+    this.deletePostEvent.emit(post);
     // Connect it when you making delete-post.
   }
 
   editButtonHandler(post: PostRecord): void {
     console.log("Edited record for post ID:", post.id);
-    // Connect it when you making update-post.
+    // when update, tell me.
+    this.editPostEvent.emit(post);
   }
 
   getAllPosts(): void {
