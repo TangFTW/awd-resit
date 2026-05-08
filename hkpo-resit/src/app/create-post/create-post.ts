@@ -28,7 +28,7 @@ export class CreatePost {
       'mobileCode': ['', Validators.required],
       'dayOfWeekCode': ['', Validators.required],
       'seq': ['', Validators.required],
-      'districtEN': ['', Validators.required],
+      'districtEN': [''],
       'nameEN': [''],
       'addressEN': [''],
       'nameTC': [''],
@@ -41,7 +41,7 @@ export class CreatePost {
   // void aka do something, but return nothing
   createRecord(formValue: any): void {
     this.serverData = null;
-    let url = 'http://localhost:3001/mobilepost';
+    let url = '/mobilepost';
 
     console.log("Creating new post...");
     console.log("URL:", url);
@@ -53,10 +53,15 @@ export class CreatePost {
         this.dialogRef.close();
       },
 
-
       error: (err) => {
-        // port crash handaler
-        alert("Failed to create! Is the server running?");
+        // improved error handling for test report
+        if (err && err.status === 0) {
+          this.message = "Cannot connect to server. Is it running?";
+        } else if (err && err.status === 404) {
+          this.message = "Record not found.";
+        } else {
+          this.message = "Error: " + (err?.message || err?.statusText || 'Unknown error');
+        }
         console.log(err);
       }
     });
@@ -67,4 +72,6 @@ export class CreatePost {
     this.dialogRef.close();
   }
 }
+
+
 

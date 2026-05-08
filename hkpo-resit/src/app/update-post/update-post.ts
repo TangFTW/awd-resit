@@ -25,21 +25,21 @@ export class UpdatePost {
     this.updatePostForm = fb.group({
       'id': [this.data.id, Validators.required],
       'mobileCode': [this.data.mobileCode],
-      'dayOfWeekCode': [''],
+      'dayOfWeekCode': [this.data.dayOfWeekCode],
       'seq': [this.data.seq],
       'districtEN': [this.data.districtEN],
       'nameEN': [this.data.nameEN],
-      'addressEN': [''],
-      'nameTC': [''],
-      'openHour': [''],
-      'closeHour': [''],
+      'addressEN': [this.data.addressEN],
+      'nameTC': [this.data.nameTC],
+      'openHour': [this.data.openHour],
+      'closeHour': [this.data.closeHour],
 
     });
   }
 
     updateRecord(formValue: any): void {
       this.serverData = null;
-      let url = 'http://localhost:3001/mobilepost/' + formValue.id;
+      let url = '/mobilepost/' + formValue.id;
 
       console.log("Updating ID:...");
       console.log("URL:", url);
@@ -59,13 +59,20 @@ export class UpdatePost {
         next: (res) => {
           console.log(res);
           this.message = "Record " + formValue.id + " updated successfully!";
-          this.dialogRef.close()
+          // show message briefly before closing so user can read it
+          setTimeout(() => this.dialogRef.close(), 1500);
         },
 
 
         error: (err) => {
-          // port crash handaler
-          alert("Failed to update! Is the server running?");
+          // improved error handling for test report
+          if (err && err.status === 0) {
+            this.message = "Cannot update. Is the server running?";
+          } else if (err && err.status === 404) {
+            this.message = "Record not found.";
+          } else {
+            this.message = "Error: " + (err?.message || err?.statusText || 'Unknown error');
+          }
           console.log(err);
         }
       });

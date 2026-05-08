@@ -30,6 +30,7 @@ export class SearchPost implements OnInit {
     this.searchPostForm = fb.group({
       'id': [''],
       'districtEN': [''],
+      'addressEN' : [''],
       'dayOfWeekCode': [''],
       'mobileCode': ['']
     });
@@ -59,15 +60,22 @@ export class SearchPost implements OnInit {
         this.serverDataArr = (res as any).data;
       },
       error: (err) => {
-        // port crash handle
-        console.log("Error fetching posts:", err);
+        // improved error handling for test report
+        if (err && err.status === 0) {
+          this.message = "Cannot search. Is the server running?";
+        } else if (err && err.status === 404) {
+          this.message = "Record not found.";
+        } else {
+          this.message = "Error: " + (err?.message || err?.statusText || 'Unknown error');
+        }
+        console.log(err);
       }
     });
   }
 
   onSubmit(formValue: any): void {
     this.serverData = null;
-    let url = 'http://localhost:3001/mobilepost?';
+    let url = '/mobilepost?';
     if (formValue.id) { url += 'id=' + formValue.id + '&'; }
     if (formValue.mobileCode) { url += 'mobileCode=' + formValue.mobileCode + '&'; }
     if (formValue.dayOfWeekCode) {url += 'dayOfWeekCode=' + formValue.dayOfWeekCode + '&';}
@@ -79,7 +87,15 @@ export class SearchPost implements OnInit {
         this.serverDataArr = (res as any).data;
       },
       error: (err) => {
-        console.log("Error searching posts:", err);
+        // improved error handling for test report
+        if (err && err.status === 0) {
+          this.message = "Cannot search. Is the server running?";
+        } else if (err && err.status === 404) {
+          this.message = "Record not found.";
+        } else {
+          this.message = "Error: " + (err?.message || err?.statusText || 'Unknown error');
+        }
+        console.log(err);
       }
     });
   }

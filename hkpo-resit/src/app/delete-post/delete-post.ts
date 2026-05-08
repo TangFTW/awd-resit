@@ -33,7 +33,7 @@ export class DeletePost {
 
   deleteRecord(id: number): void {
     this.serverData = null;
-    let url = 'http://localhost:3001/mobilepost/' + id;
+    let url = '/mobilepost/' + id;
 
     console.log("Deleting ID:", id);
     console.log("URL:", url);
@@ -43,18 +43,25 @@ export class DeletePost {
         console.log(res);
         this.message = "Record " + id + " deleted successfully";
         this.serverDataArr = JSON.parse(JSON.stringify(res));
-        this.dialogRef.close();
+        // keep the success message visible briefly before closing
+        setTimeout(() => this.dialogRef.close(), 1500);
       },
       error: (err) => {
-        // port crash handaler
-        alert("Failed to delete! Is the server running?");
+        // improved error handling for test report
+        if (err && err.status === 0) {
+          this.message = "Cannot delete. Is the server running?";
+        } else if (err && err.status === 404) {
+          this.message = "Record not found.";
+        } else {
+          this.message = "Error: " + (err?.message || err?.statusText || 'Unknown error');
+        }
         console.log(err);
       }
     });
   }
 
   confirmDelete(): void {
-    this.deleteRecord(this.data.id); // triggers delete
+    this.deleteRecord(this.data.id);
   }
   closeModal(): void {
     this.dialogRef.close(); // cancel button — close without deleting

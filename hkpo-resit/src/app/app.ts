@@ -33,14 +33,14 @@ export class App {
     this.dialogConfig.height = "500px";
     this.dialogConfig.width = "650px";
     this.deletePostDialogRef = this.dialog.open(DeletePost, this.dialogConfig);
+    
   }
   openCreateDialog(): void {
     console.log("App: createEvent received");
     this.dialogConfig.id = "createPost";
     this.dialogConfig.height = "500px";
     this.dialogConfig.width = "650px";
-    // when success, return new data and update to db.
-    this.createPostDialogRef = this.dialog.open(CreatePost, this.dialogConfig);
+
   }
 
   openEditDialog(post: PostRecord): void {

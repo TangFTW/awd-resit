@@ -6,7 +6,9 @@
       <input type="text" formControlName="id" placeholder="Search by ID">
     </div>
 
-    <div class="ui error message" *ngIf="searchPostForm.controls['searchKey'].hasError('required')">
+
+
+    <div class="ui error message" *ngIf="searchPostForm.controls['id'].hasError('required')">
       Please enter a search key.
     </div>
 
@@ -25,7 +27,7 @@
       <thead>
       <tr>
         <th>id</th>
-        <th>Moblie Code</th>
+        <th>Mobile Code</th>
         <th>Day of week code</th>
         <th>seq</th>
         <th>Name (EN)</th>
@@ -40,21 +42,17 @@
           <tr>
             <td>{{post.id}}</td>
             <td>{{post.mobileCode}}</td>
-            <td>{{post.dayofWeekCode}}</td>
+            <td>{{post.dayOfWeekCode}}</td>
             <td>{{post.seq}}</td>
             <td>{{post.nameEN}}</td>
             <td>{{post.districtEN}}</td>
             <td>{{post.openHour}} - {{post.closeHour}}</td>
 
             <td>
-              <button (click)="deleteButtonHandler(post)">
-                Delete
-              </button>
+              <button class="ui red mini button" (click)="deleteButtonHandler(post)">Delete</button>
             </td>
             <td>
-              <button (click)="editButtonHandler(post)">
-                Edit
-              </button>
+              <button class="ui blue mini button" (click)="editButtonHandler(post)">Edit</button>
             </td>
           </tr>
         }
