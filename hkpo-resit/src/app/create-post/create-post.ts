@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectorRef } from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { PostRecord } from '../postrecord.model';
@@ -16,13 +16,15 @@ export class CreatePost {
   dialogRef: MatDialogRef<CreatePost>;
   createPostForm: FormGroup;
   http: HttpClient;
+  cdr: ChangeDetectorRef;
   serverData!: Object | null;
   serverDataArr!: any;
   message: string = 'Create record here.'
 //build a form.
-  constructor(dialogRef: MatDialogRef<CreatePost>, fb: FormBuilder, http: HttpClient)  {
+  constructor(dialogRef: MatDialogRef<CreatePost>, fb: FormBuilder, http: HttpClient, cdr: ChangeDetectorRef)  {
     this.http = http;
     this.dialogRef = dialogRef;
+    this.cdr = cdr;
 // enter essenial data for creating a data
     this.createPostForm = fb.group({
       'mobileCode': ['', Validators.required],
@@ -48,9 +50,11 @@ export class CreatePost {
 
     this.http.post(url, formValue).subscribe({
       next: (res) => {
-        console.log(res);
-        this.message = "Record " + (res as any).data.id + " created successfully!";
-        this.dialogRef.close();
+        console.log(res); // check exact response shape
+        const newId = (res as any)?.id || (res as any)?.data?.id || '?';
+        this.message = "Record " + newId + " created successfully!";
+        this.cdr.detectChanges();
+        setTimeout(() => this.dialogRef.close(), 2500);
       },
 
       error: (err) => {

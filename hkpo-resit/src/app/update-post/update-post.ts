@@ -1,4 +1,4 @@
-import { Component,Inject } from '@angular/core';
+import { Component,Inject, ChangeDetectorRef  } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import {FormGroup, FormBuilder, Validators, ReactiveFormsModule} from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -17,9 +17,13 @@ export class UpdatePost {
   http: HttpClient;
   serverData!: Object | null;
   serverDataArr!: any
-  message: string = "Type an id to update a record.";
+  message: string = "";
 
-  constructor(dialogRef: MatDialogRef<UpdatePost>, fb: FormBuilder, http: HttpClient, @Inject(MAT_DIALOG_DATA) public data: PostRecord) {
+  constructor(dialogRef: MatDialogRef<UpdatePost>,
+              fb: FormBuilder, http: HttpClient,
+              @Inject(MAT_DIALOG_DATA)
+              public data: PostRecord ,
+              private cdr: ChangeDetectorRef ) {
     this.dialogRef = dialogRef;
     this.http = http;
     this.updatePostForm = fb.group({
@@ -29,10 +33,25 @@ export class UpdatePost {
       'seq': [this.data.seq],
       'districtEN': [this.data.districtEN],
       'nameEN': [this.data.nameEN],
+      'locationEN': [this.data.locationEN],
       'addressEN': [this.data.addressEN],
+
+      // Traditional Chinese
       'nameTC': [this.data.nameTC],
+      'districtTC': [this.data.districtTC],
+      'locationTC': [this.data.locationTC],
+      'addressTC': [this.data.addressTC],
+
+      // Simplified Chinese
+      'nameSC': [this.data.nameSC],
+      'districtSC': [this.data.districtSC],
+      'locationSC': [this.data.locationSC],
+      'addressSC': [this.data.addressSC],
+
       'openHour': [this.data.openHour],
       'closeHour': [this.data.closeHour],
+      'latitude': [this.data.latitude],
+      'longitude': [this.data.longitude],
 
     });
   }
@@ -59,8 +78,10 @@ export class UpdatePost {
         next: (res) => {
           console.log(res);
           this.message = "Record " + formValue.id + " updated successfully!";
+          //detect change
+          this.cdr.detectChanges();
           // show message briefly before closing so user can read it
-          setTimeout(() => this.dialogRef.close(), 1500);
+          setTimeout(() => this.dialogRef.close(), 2500);
         },
 
 

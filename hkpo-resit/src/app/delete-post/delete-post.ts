@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, ChangeDetectorRef } from '@angular/core';
 import {FormBuilder, FormGroup, Validators, ReactiveFormsModule} from '@angular/forms';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { PostRecord } from '../postrecord.model';
@@ -19,10 +19,11 @@ export class DeletePost {
   http: HttpClient;
   serverData!: Object | null;
   serverDataArr!: any
-  message: string = "Click the submit button to delete";
+  message: string = "";
 //@inject: grab data was passed into this dialog when it was opened.
-
-  constructor(dialogRef: MatDialogRef<DeletePost>, fb: FormBuilder, http: HttpClient, @Inject(MAT_DIALOG_DATA) public data: PostRecord)  {
+// CHnage detectorref: detect changes in the component.
+  constructor(dialogRef: MatDialogRef<DeletePost>, fb: FormBuilder, http: HttpClient, @Inject(MAT_DIALOG_DATA) public data: PostRecord,
+              private cdr: ChangeDetectorRef)  {
     this.http = http;
     this.dialogRef = dialogRef;
     // Form Bulider
@@ -41,7 +42,8 @@ export class DeletePost {
     this.http.delete(url).subscribe({
       next: (res) => {
         console.log(res);
-        this.message = "Record " + id + " deleted successfully";
+        this.message = "Record " + id + " deleted. Please  Search again to update the list.";
+        this.cdr.detectChanges(); // ensure the message is updated in the UI
         this.serverDataArr = JSON.parse(JSON.stringify(res));
         // keep the success message visible briefly before closing
         setTimeout(() => this.dialogRef.close(), 1500);

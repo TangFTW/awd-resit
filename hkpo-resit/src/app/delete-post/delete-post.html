@@ -22,6 +22,10 @@
     </div>
 
     <button type="button" class="ui red button" (click)="confirmDelete()">Confirm Delete</button>
+    <div class="ui left pointing red basic label">
+      {{ message }}
+    </div>
+
   </form>
   <div class="ui center aligned basic segment">
 
@@ -29,7 +33,7 @@
       <button mat-raised-button id="modal-close-button" (click)="closeModal()">Cancel</button>
     </div>
 
-    <p>{{ message }}</p>
+
 
 </div>
 </div>

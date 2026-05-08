@@ -3,7 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { PostRecord } from '../postrecord.model';
 import {FormGroup, FormBuilder, ReactiveFormsModule} from '@angular/forms';
 import { CommonModule } from '@angular/common';
-
+// Dom Santizer: to allow google map use in the app(since Angular blocks exernal web connection)
+import { DomSanitizer , SafeResourceUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-search-post',
@@ -15,6 +16,7 @@ import { CommonModule } from '@angular/common';
 
 //
 export class SearchPost implements OnInit {
+  // propteries
   @Output() deletePostEvent = new EventEmitter<PostRecord>();
   @Output() editPostEvent: EventEmitter<PostRecord> = new EventEmitter<PostRecord>();
   searchPostForm: FormGroup;
@@ -23,8 +25,11 @@ export class SearchPost implements OnInit {
   serverDataArr!: any;
   selectedPost!: PostRecord;
   message: string = 'Search record here.'
+  mapAddress: string = ""; // address to show in Google Maps iframe
+  mapUrl: SafeResourceUrl = "";
 
-  constructor(fb: FormBuilder , http: HttpClient) {
+
+  constructor(fb: FormBuilder , http: HttpClient, private sanitizer: DomSanitizer) {
     this.http = http;
     // Form Bulider
     this.searchPostForm = fb.group({
@@ -32,12 +37,13 @@ export class SearchPost implements OnInit {
       'districtEN': [''],
       'addressEN' : [''],
       'dayOfWeekCode': [''],
-      'mobileCode': ['']
+      'mobileCode': [''],
+      'seq' : ['']
     });
 
 
   }
-
+//methods
   deleteButtonHandler(post: PostRecord): void {
     console.log("Delete clicked for post ID:", post.id);
     this.deletePostEvent.emit(post);
@@ -48,6 +54,14 @@ export class SearchPost implements OnInit {
     console.log("Edited record for post ID:", post.id);
     // when update, tell me.
     this.editPostEvent.emit(post);
+  }
+// gooogle map
+    showMap(address: string): void {
+      this.mapAddress = address;
+      const url = "https://maps.google.com/maps?q=" + encodeURIComponent(address) + "&output=embed";
+      this.mapUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
+
+
   }
 
   getAllPosts(): void {
@@ -80,6 +94,8 @@ export class SearchPost implements OnInit {
     if (formValue.mobileCode) { url += 'mobileCode=' + formValue.mobileCode + '&'; }
     if (formValue.dayOfWeekCode) {url += 'dayOfWeekCode=' + formValue.dayOfWeekCode + '&';}
     if (formValue.districtEN) {url += 'districtEN=' + formValue.districtEN + '&';}
+    if (formValue.seq) {url += 'seq=' + formValue.seq + '&';}
+
     console.log(url);
     this.http.get(url).subscribe({
       next: (res) => {

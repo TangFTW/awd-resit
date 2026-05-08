@@ -5,21 +5,43 @@
       <label>ID</label>
       <input type="text" formControlName="id" placeholder="Search by ID">
     </div>
-
-
-
-    <div class="ui error message" *ngIf="searchPostForm.controls['id'].hasError('required')">
-      Please enter a search key.
+    <div class="field">
+      <label>District (EN)</label>
+      <input type="text" formControlName="districtEN" placeholder="e.g. Central">
     </div>
 
-    <div *ngIf="searchPostForm.valid">
-      <button type="submit" class="ui button">Submit</button>
+    <div class="field">
+      <label>Address (EN)</label>
+      <input type="text" formControlName="addressEN" placeholder="e.g. 1">
     </div>
+
+    <div class="field">
+      <label>seq</label>
+      <input type="text" formControlName="seq" placeholder="e.g. 1">
+    </div>
+    <div class="field">
+      <label>Day of Week Code</label>
+      <input type="text" formControlName="dayOfWeekCode" placeholder="e.g. 1">
+    </div>
+
+
+    <button type="submit" class="ui button">Submit</button>
   </form>
 
-  <div>
-    {{ serverData | json }}
-  </div>
+
+  <!--maps-->
+  @if (mapAddress) {
+    <div class="ui segment">
+      <h4 class="ui header">Map: {{ mapAddress }}</h4>
+      <iframe
+        width="100%"
+        height="350"
+        style="border:0"
+        loading="lazy"
+        [src]="mapUrl">
+      </iframe>
+    </div>
+  }
 
   <p></p>
   <div>
@@ -32,6 +54,7 @@
         <th>seq</th>
         <th>Name (EN)</th>
         <th>District (EN)</th>
+        <th>Address (EN)</th>
         <th>Open Hours</th>
         <th>Actions</th>
       </tr>
@@ -46,6 +69,7 @@
             <td>{{post.seq}}</td>
             <td>{{post.nameEN}}</td>
             <td>{{post.districtEN}}</td>
+            <td>{{post.addressEN}}</td>
             <td>{{post.openHour}} - {{post.closeHour}}</td>
 
             <td>
@@ -53,6 +77,9 @@
             </td>
             <td>
               <button class="ui blue mini button" (click)="editButtonHandler(post)">Edit</button>
+            </td>
+            <td>
+              <button class="ui green mini button" (click)="showMap(post.addressEN)">Map</button>
             </td>
           </tr>
         }
