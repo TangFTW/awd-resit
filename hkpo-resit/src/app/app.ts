@@ -4,13 +4,13 @@ import { SearchPost } from './search-post/search-post';
 import { DeletePost } from './delete-post/delete-post';
 import { UpdatePost } from './update-post/update-post';
 import { CreatePost } from './create-post/create-post';
-import { TitleCasePipe } from '@angular/common';
+
 import { PostRecord } from './postrecord.model';
 import {MatDialog, MatDialogConfig, MatDialogRef} from '@angular/material/dialog';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, SearchPost, DeletePost, UpdatePost, CreatePost, TitleCasePipe] ,
+  imports: [RouterOutlet, SearchPost, DeletePost, UpdatePost, CreatePost] ,
   templateUrl: './app.html',
   styleUrl: './app.css',
 
@@ -46,6 +46,7 @@ export class App {
   openEditDialog(post: PostRecord): void {
     console.log("App: editEvent received");
     this.dialogConfig.id = "updatePost";
+    this.dialogConfig.data = post;
     this.dialogConfig.height = "500px";
     this.dialogConfig.width = "650px";
     // when success, return new data and update to db.
