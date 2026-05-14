@@ -24,9 +24,28 @@
       <input type="text" formControlName="dayOfWeekCode" placeholder="e.g. 1">
     </div>
 
+    <div class="field">
+      <label>Name (EN)</label>
+      <input type="text" formControlName="nameEN" placeholder="e.g. Central Post Office">
+    </div>
+
+    <div class="field">
+      <label>Open Hour</label>
+      <input type="text" formControlName="openHour" placeholder="e.g. 08:00">
+    </div>
+
+    <div class="field">
+      <label>Close Hour</label>
+      <input type="text" formControlName="closeHour" placeholder="e.g. 20:00">
+    </div>
 
     <button type="submit" class="ui button">Submit</button>
-  </form>
+    <button type="button" class="ui button" (click)="getAllPosts()">Show All Records</button>
+   </form>
+
+  @if (message && message !== 'Search record here.') {
+    <div class="ui error message">{{ message }}</div>
+  }
 
 
   <!--maps-->
@@ -44,8 +63,8 @@
   }
 
   <p></p>
-  <div>
-    <table class="ui celled striped table">
+  <div class="table-scroll">
+    <table class="ui celled striped selectable table">
       <thead>
       <tr>
         <th>id</th>
@@ -54,9 +73,9 @@
         <th>seq</th>
         <th>Name (EN)</th>
         <th>District (EN)</th>
+        <th>Location (EN)</th>
         <th>Address (EN)</th>
-        <th>Open Hours</th>
-        <th>Actions</th>
+        <th colspan="4" class="center aligned">Actions</th>
       </tr>
       </thead>
       <tbody>
@@ -69,23 +88,33 @@
             <td>{{post.seq}}</td>
             <td>{{post.nameEN}}</td>
             <td>{{post.districtEN}}</td>
+            <td>{{post.locationEN}}</td>
             <td>{{post.addressEN}}</td>
-            <td>{{post.openHour}} - {{post.closeHour}}</td>
 
-            <td>
-              <button class="ui red mini button" (click)="deleteButtonHandler(post)">Delete</button>
+            <td class="center aligned">
+              <button class="ui mini teal labeled icon button" (click)="viewButtonHandler(post)">
+                View
+              </button>
             </td>
-            <td>
-              <button class="ui blue mini button" (click)="editButtonHandler(post)">Edit</button>
+            <td class="center aligned">
+              <button class="ui mini blue labeled icon button" (click)="editButtonHandler(post)">
+                Edit
+              </button>
             </td>
-            <td>
-              <button class="ui green mini button" (click)="showMap(post.addressEN)">Map</button>
+            <td class="center aligned">
+              <button class="ui mini red labeled icon button" (click)="deleteButtonHandler(post)">
+                Delete
+              </button>
+            </td>
+            <td class="center aligned">
+              <button class="ui mini green labeled icon button" (click)="showMap(post.latitude, post.longitude, post.addressEN)">
+                Map
+              </button>
             </td>
           </tr>
         }
       </tbody>
     </table>
-
   </div>
 
 

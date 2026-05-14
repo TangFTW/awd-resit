@@ -2,7 +2,7 @@
   <h2 class="ui header">Delete Post Office Record</h2>
 
   <p><strong>Are you sure you want to delete:</strong><br>
-    ID: {{ data.id }} - {{ data.districtEN }}
+    ID: {{ data.id }} - {{ data.addressEN }}
   </p>
 
   <form [formGroup]="deletePostForm"
@@ -25,7 +25,6 @@
     <div class="ui left pointing red basic label">
       {{ message }}
     </div>
-
   </form>
   <div class="ui center aligned basic segment">
 

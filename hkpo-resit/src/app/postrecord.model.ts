@@ -2,7 +2,7 @@ export interface PostRecord {
   //basic specs.
   id: number ;
   mobileCode: string;
-  dayofWeekCode: string;
+  dayOfWeekCode: string;
   seq: string;
   //Eng data
   nameEN: string;
